@@ -30,6 +30,6 @@ def merge_sort(arr):
 
     return arr
 
-my_array = [4, 2, 5, 1]
+my_array = [4, 2, 5, 3, 1]
 sorted_array = merge_sort(my_array)
-print(sorted_array) # output: [1, 2, 4, 5]
+print(sorted_array) # output: [1, 2, 3, 4, 5]
