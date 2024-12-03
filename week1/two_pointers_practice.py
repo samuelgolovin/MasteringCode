@@ -10,3 +10,6 @@ def two_sum_sorted(arr, target):
             left += 1
         else:
             right -= 1
+
+my_array = [1, 2, 3, 4, 5]
+two_sum_sorted(my_array, 4) # output 1 3 because those add up to 4
