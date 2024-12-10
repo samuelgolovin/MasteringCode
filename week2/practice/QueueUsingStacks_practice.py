@@ -20,3 +20,9 @@ queue.enqueue(1)
 queue.enqueue(2)
 print(queue.dequeue())  # Output: 1
 print(queue.dequeue())  # Output: 2
+queue.enqueue(1)
+queue.enqueue(2)
+print(queue.dequeue())  # Output: 1
+queue.enqueue(3)
+print(queue.dequeue())  # Output: 2
+print(queue.dequeue())  # Output: 3
