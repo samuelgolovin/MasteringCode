@@ -28,3 +28,9 @@ class Solution(object):
                 stack.append(int(token))
             
         return stack.pop()
+
+# Example usage
+solution = Solution()
+print(solution.evalRPN(["2", "1", "+", "3", "*"]))  # Output: 9
+print(solution.evalRPN(["4", "13", "5", "/", "+"]))  # Output: 6
+print(solution.evalRPN(["10", "6", "9", "3", "+", "-11", "*", "/", "*", "17", "+", "5", "+"]))  # Output: 22
