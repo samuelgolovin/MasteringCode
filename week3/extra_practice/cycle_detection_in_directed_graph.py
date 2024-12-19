@@ -19,7 +19,7 @@ graph_cycle_directed = {
     'E': []
 }
 
-def detect_cycle(graph):
+def detect_cycle_directed_graph(graph):
     visited = set()
     stack = set()
     def dfs(node):
@@ -45,7 +45,7 @@ def detect_cycle(graph):
     return False
 
 
-if detect_cycle(graph_cycle_directed) == True:
+if detect_cycle_directed_graph(graph_cycle_directed) == True:
     print("Cycle exists in graph")
 else:
     print("Cycle does not exist in graph")
@@ -58,7 +58,7 @@ graph_no_cycle = {
     'E': []
 }
 # Expected: "Cycle does not exist in graph"
-if detect_cycle(graph_no_cycle) == True:
+if detect_cycle_directed_graph(graph_no_cycle) == True:
     print("Cycle exists in graph")
 else:
     print("Cycle does not exist in graph")
@@ -71,7 +71,7 @@ graph_mixed = {
     'E': []
 }
 # Expected: "Cycle exists in graph"
-if detect_cycle(graph_mixed) == True:
+if detect_cycle_directed_graph(graph_mixed) == True:
     print("Cycle exists in graph")
 else:
     print("Cycle does not exist in graph")
