@@ -16,24 +16,15 @@ graph_dfs = {
     'D': ['A', 'C']
 }
 
-# Checking all of the nodes (for personal reference)
-for node in graph_dfs:
-    print("Node: ", node)
-    for neighbor in graph_dfs[node]:
-        print("Neighbor: ", neighbor)
-
-print()
-print()
-print("DFS Example: ")
-
-def dfs(node, graph):
+def dfs(node, graph, visited=None):
+    if visited is None:
+        visited = set()  # Initialize visited set if not provided
     if node in visited:
         return
     visited.add(node)
-    print(node)
+    print(node)  # Visit the current node
     for neighbor in graph[node]:
-        dfs(neighbor, graph)
+        dfs(neighbor, graph, visited)
 
-visited = set()
-
+print("DFS Traversal:")
 dfs('A', graph_dfs)
