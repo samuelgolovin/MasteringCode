@@ -21,25 +21,25 @@ font = pygame.font.Font(None, 25)
 cities = Cities()
 
 
-dijkstra_graph = {}
+start = 'A'
+end = 'C'
+shortest_distance, path = cities.dijkstra(start, end)
+print(f"Shortest distance: {shortest_distance}")
+print(f"Path: {' -> '.join(path)}")
 
-for city in cities.cities:
-    dijkstra_graph[city.name] = city.neighbors
-start_vertex = cities.selected_city
-shortest_distances = dijkstra(dijkstra_graph, start_vertex)
+start = 'A'
+end = 'B'
+shortest_distance, path = cities.dijkstra(start, end)
+print(f"Shortest distance: {shortest_distance}")
+print(f"Path: {' -> '.join(path)}")
 
-dfs_order = []
-dfs('A', set(), dfs_order, cities.graph)
-cll = CircularLinkedList()
 
-for node in dfs_order:
-    cll.append(node)
 
-selected_city = cll.head
+selected_city_start, selected_city_end = cities.update_traversal('A', 'A')
 
-print(cll.head.data)
-##cll.display()
-##print(dfs_order)
+shortest_distance, path = cities.dijkstra(selected_city_start.data, selected_city_end.data)
+print(f"Shortest distance: {shortest_distance}")
+print(f"Path: {' -> '.join(path)}")
 
 
 # Main game loop
@@ -48,27 +48,66 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+            
         if event.type == pygame.MOUSEBUTTONUP:
             mouse_pos = pygame.mouse.get_pos()
-            neighbors = cities.get_neighbors(mouse_pos)
-            cities.add_city(pygame.mouse.get_pos(), neighbors)
-            cities.update_edges()
+            cities.add_city(pygame.mouse.get_pos())
+            selected_city_start, selected_city_end = cities.update_traversal(selected_city_start.data, selected_city_end.data)
+            
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
-                selected_city = selected_city.next
-                cities.set_selected_city(selected_city.data)
+            if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT or event.key == pygame.K_a or event.key == pygame.K_d:
+                if event.key == pygame.K_LEFT:
+                    selected_city_start = selected_city_start.prev
+                    cities.set_selected_start(selected_city_start.data)
+                if event.key == pygame.K_RIGHT:
+                    selected_city_start = selected_city_start.next
+                    cities.set_selected_start(selected_city_start.data)
+                if event.key == pygame.K_a:
+                    selected_city_end = selected_city_end.prev
+                    cities.set_selected_end(selected_city_end.data)
+                if event.key == pygame.K_d:
+                    selected_city_end = selected_city_end.next
+                    cities.set_selected_end(selected_city_end.data)
+
+                shortest_distance, path = cities.dijkstra(selected_city_start.data, selected_city_end.data)
+
+                for city in cities.cities:
+                    city.in_path = False
+                for node in path:
+                    for city in cities.cities:
+                        if node == city.name:
+                            city.in_path = True
+
+                for edge in cities.edges:
+                    edge.selected = False
+                for edge in cities.edges:
+                    if edge.start.in_path and edge.end.in_path:
+                        edge.selected = True
+
+
+    
 
     # Fill the screen with a color (RGB)
     screen.fill((220, 220, 220))
 
     for edge in cities.edges:
-        pygame.draw.line(screen, 'black', edge.start_pos, edge.end_pos, 3)
+        if edge.selected:
+            pygame.draw.line(screen, 'purple', edge.start_pos, edge.end_pos, 5)
+        else:
+            pygame.draw.line(screen, 'black', edge.start_pos, edge.end_pos, 3)
 
     for city in cities.cities:
-        if city.selected:
-            pygame.draw.circle(screen, 'green', city.position, 15)
+        if city.selected_start and city.selected_end:
+            pygame.draw.circle(screen, 'blue', city.position, 20)
+        elif city.selected_start:
+            pygame.draw.circle(screen, 'green', city.position, 18)
+        elif city.selected_end:
+            pygame.draw.circle(screen, 'red', city.position, 18)
         else:
-            pygame.draw.circle(screen, 'red', city.position, 15)
+            if city.in_path:
+                pygame.draw.circle(screen, 'purple', city.position, 10)
+            else:
+                pygame.draw.circle(screen, 'black', city.position, 14)
         screen.blit(city.text, city.text_rect)
     
 
